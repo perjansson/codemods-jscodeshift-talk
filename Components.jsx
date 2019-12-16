@@ -1,60 +1,61 @@
 import React from "react";
 
-var Team = ({ name, onClick }) => <div onClick={onClick}>{name}</div>;
+class Team extends Component {
+  render() {
+    return <div onClick={onClick}>{name}</div>;
+  }
+}
 
-var TeamStandings = React.createClass({
-  getInitialState: function() {
-    return {
-      teams: [
-        "Finland",
-        "Sweden",
-        "USA",
-        "Canada",
-        "Czech Republic",
-        "Slovakia",
-        "Germany",
-        "Italy",
-        "Norway"
-      ],
-      selectedTeam: null,
-      selectionHistory: null
-    };
-  },
+class TeamStandings extends React.Component {
+  state = {
+    teams: [
+      "Finland",
+      "Sweden",
+      "USA",
+      "Canada",
+      "Czech Republic",
+      "Slovakia",
+      "Germany",
+      "Italy",
+      "Norway",
+    ],
+    selectedTeam: null,
+    selectionHistory: null
+  };
 
-  setSelectedTeam: function(selectedTeam) {
+  setSelectedTeam = (selectedTeam) => {
     this.setState(state => ({
-      selectedTeam: selectedTeam,
-      selectionHistory: Object.assign(
-        {},
-        state.selectionHistory,
-        selectedTeam.id
-      )
+      selectedTeam,
+      selectionHistory: {
+        ...state.selectionHistory,
+        ...selectedTeam.id
+      }
     }));
-  },
+  };
 
-  renderTeams: function() {
-    var teams = this.state.teams.map(team => (
+  renderTeams = () => {
+    const teams = this.state.teams.map(team => (
       <Team
         value={team}
-        onClick={function(e) {
+        onClick={e => {
           this.setSelectedTeam(e.target.value);
-        }.bind(this)}
+        }}
       />
     ));
 
     return teams;
-  },
+  };
 
-  renderBestTeamMessage: function() {
-    var message = "No teams :(";
+  renderBestTeamMessage = () => {
+    let message = "No teams :(";
     if (this.state.teams.length) {
-      var bestTeam = "Finland";
-      message = "The best team is " + bestTeam;
+      const bestTeam = "Finland";
+      message = `The best team is ${bestTeam}`;
     }
     return message;
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <div>
         {this.renderTeams()}
@@ -62,6 +63,6 @@ var TeamStandings = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default TeamStandings;
